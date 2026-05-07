@@ -10,6 +10,7 @@ _start:
 global start
 extern kmain
 start:
+    cli
     mov esp, stack_space
     call kmain
 

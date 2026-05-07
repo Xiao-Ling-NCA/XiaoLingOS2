@@ -26,11 +26,12 @@ clean:
 kernel:
 	$(compiler) $(target) $(cflags) -c $(src_dir)/kernel.c -o kernel.o 
 	$(compiler) $(target) $(cflags) -c $(standard_library)/stdio.c -o stdio.o 
+	$(asm) $(aflags) $(src_dir)/gdt.asm -o gdt.o
 boot:
 	$(asm) $(aflags) $(src_dir)/boot.asm -o boot.o
 
 image:
-	ld -m elf_i386 -T src/linker.lld -o kernel boot.o kernel.o stdio.o 
+	ld -m elf_i386 -T src/linker.lld -o kernel boot.o kernel.o stdio.o gdt.o 
 	mv kernel XiaoLingOS/boot/kernel
 	grub-mkrescue -o XiaoLingOS.iso XiaoLingOS
 	rm *.o

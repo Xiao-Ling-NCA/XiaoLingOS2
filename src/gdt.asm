@@ -20,13 +20,13 @@ section .data
 section .text
     global load_gdt
     load_gdt:
+        ;load GDT
+        lgdt [GDT_INFORMATION]
+
         ;set up control registers
         mov eax, cr0
         or eax, 1
         mov cr0, eax
-
-        ;load GDT
-        lgdt [GDT_INFORMATION]
 
         ;set up segment registers
         jmp 0x08:flush

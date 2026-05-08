@@ -2,25 +2,41 @@
 
 section .data
     GDT_START:
-    GDT_NULL:
         dq 0x0
-    GDT_KERNEL_CODE:
-        dq 0b000000001100111110010110000000000000000000000001111111111111111
-    GDT_KERNEL_DATA:
-        dq 0b000000001100111110010110000000000000000000000001111111111111111
-    GDT_USER_CODE:
-        dq 0b000000001100111111111110000000000000000000000001111111111111111
-    GDT_USER_DATA:
-        dq 0b000000001100111111110110000000000000000000000001111111111111111
+    ;KERNEL CODE
+        dq 0x00CF9A000000FFFF
+    ;KERNEL DATA
+        dq 0x00CF92000000FFFF
+    ;USER CODE
+        dq 0x00CFFA000000FFFF
+    ;USER DATA:
+        dq 0x00CFF2000000FFFF
     GDT_END:
         
     GDT_INFORMATION:
         dw (GDT_END-GDT_START)-1
-        dd GDT_START 
+        dd GDT_START
+
 section .text
     global load_gdt
     load_gdt:
-        lgdt [GDT_INFORMATION]
-        ret
+        ;set up control registers
+        mov eax, cr0
+        or eax, 1
+        mov cr0, eax
 
-section .bss
+        ;load GDT
+        lgdt [GDT_INFORMATION]
+
+        ;set up segment registers
+        jmp 0x08:flush
+    flush:
+        ;set up registers
+        mov ax, 0x10
+        mov ds, ax
+        mov ss, ax
+        mov es, ax
+        mov fs, ax
+        mov gs, ax
+
+        ret

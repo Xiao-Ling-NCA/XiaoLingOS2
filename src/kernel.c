@@ -6,9 +6,9 @@ void kmain(void);
 
 void kmain(){
     print("did this work chat\n");
+
     load_gdt();
     print("GDT is loaded!\n");
-    print("blah blah blah");
 
     return;
 }

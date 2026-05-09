@@ -3,6 +3,8 @@
 extern void gdt_flush(uint32_t);
 extern void tss_flush(void);
 
+extern uint32_t stack_top;
+
 struct gdt_entry_struct gdt_entries[6];
 struct gdt_pointer_struct gdt_ptr;
 struct tss_entry_struct tss_entry;
@@ -16,7 +18,9 @@ void init_gdt(){
     set_gdt_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); //user code
     set_gdt_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); //user data
 
-    writeTSS(5, 0x10, 0x0);
+    uint32_t stack_addr = (uint32_t)&stack_top;
+
+    writeTSS(5, 0x10, stack_addr);
 
     gdt_flush((uint32_t)&gdt_ptr);
     tss_flush();

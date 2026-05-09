@@ -11,7 +11,7 @@ global start
 extern kmain
 start:
     cli
-    mov esp, stack_space
+    mov esp, stack_top
     call kmain
 
 halt_kernel:
@@ -19,6 +19,8 @@ halt_kernel:
     jmp $
 
 section .bss
-resb 8192 ;8kb stack
 
-stack_space:
+stack_bottom:
+resb 8192 ;8kb stack
+global stack_top
+stack_top:

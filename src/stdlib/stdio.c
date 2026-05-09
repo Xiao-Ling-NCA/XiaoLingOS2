@@ -67,20 +67,20 @@ void print(const char* str){
                     newLine();
                 }
                 while(tab_needed > 0){
-                    vga_addr[row*column_limit + column] = ' ' | current_color;
+                    vga_addr[row*column_limit + (column++)] = ' ' | current_color;
                     tab_needed--;
                     column++;
                 }
+                break;
             default:
                 if(column == column_limit){
                     newLine();
                 }
-                vga_addr[row*column_limit + column] = *str | current_color;
+                vga_addr[row*column_limit + (column++)] = *str | current_color;
                 break;
 
         }
         str = str + 1;
-        column = column + 1;
     }
     return;
 }

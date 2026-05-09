@@ -1,5 +1,6 @@
 #include "idt.h"
 
+//All of this is for the ISR handling
 extern void* isr_stub_table[];
 
 const uint32_t IDT_MAX_DESCRIPTORS = 32;
@@ -8,11 +9,46 @@ static idt_entry_t idt[256];
 static idtr_t idtr;
 static boolean vectors[IDT_MAX_DESCRIPTORS];
 
+unsigned char* interrupt_message[IDT_MAX_DESCRIPTORS]={
+    "Divide Error",
+    "Debug Exceptions",
+    "NMI Interrupt",
+    "Breakpoint",
+    "INTO Detected Overflow",
+    "BOUND Range Exceeded",
+    "Invalid Opcode",
+    "Coprocessor Not Available",
+    "Double Exception",
+    "Coprocessor Segment Overrun",
+    "Invalid Task State Segment",
+    "Segment Not Present",
+    "Stack Fault",
+    "General Protection",
+    "Page Fault",
+    "(reserved)",
+    "Coprocessor Error",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)",
+    "(reserved)"
+};
+
 void idt_set_descriptor(uint8_t entry, void* isr, uint8_t flags);
 __attribute__((noreturn)) void exception_handler(void);
 void idt_init(void);
 
-//twin what the fuck is this bro. We do NOT just halt the computer
 void exception_handler() {
     __asm__ volatile ("cli; hlt");
 }

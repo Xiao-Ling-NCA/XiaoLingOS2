@@ -12,4 +12,8 @@ typedef struct {
 	uint32_t	base;
 } __attribute__((packed)) idtr_t;
 
+typedef struct{
+    
+}__attribute__((packed)) InterruptRegisters;
+
 void init_idt(void);

@@ -5,7 +5,3 @@ void memset(void *dest, uint32_t value, uint32_t count){
         *temp++ = value;
     }
 }
-
-void outPortB(uint16_t port, uint8_t value){
-    asm volatile ("outb %1, %0" : : "dN" (port), "a" (value));
-}
